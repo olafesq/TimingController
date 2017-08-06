@@ -1,29 +1,28 @@
 /*
-  Blink
-  Turns on an LED on for one second, then off for one second, repeatedly.
-
-  Most Arduinos have an on-board LED you can control. On the Uno and
-  Leonardo, it is attached to digital pin 13. If you're unsure what
-  pin the on-board LED is connected to on your Arduino model, check
-  the documentation at http://arduino.cc
-
-  This example code is in the public domain.
-
-  modified 8 May 2014
-  by Scott Fitzgerald
+Engine coil-on-plug controller
+by Olavi, 6 Aug 2017
  */
 
+#include "SignalIn.h"
+#define SPARK 13 //pin number for spark output
+#define SENSOR 2 //pin number for sensor input
+SignalIn camSignal(SENSOR, SPARK);
 
-// the setup function runs once when you press reset or power the board
+ // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize digital pin 13 as an output.
-  pinMode(13, OUTPUT);
+
+  pinMode(SPARK, OUTPUT);
+  pinMode(SENSOR, INPUT); //square hall/vr signal  
+
+  attachInterrupt(digitalPinToInterrupt(SENSOR), callSpark, RISING);
+
 }
 
 // the loop function runs over and over again forever
 void loop() {
-  digitalWrite(13, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);              // wait for a second
-  digitalWrite(13, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);              // wait for a second
+}
+
+void callSpark(){ //helper to call member function
+	  camSignal.makeSpark(); 
 }
